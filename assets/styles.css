@@ -471,3 +471,46 @@ img { max-width: 100%; display: block; }
     margin: 1.75rem 0 0.5rem;
   }
 }
+.unesco-tracker {
+  max-width: var(--wide-width);
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.unesco-tracker__inner {
+  background: var(--paper-raised);
+  border-radius: 6px;
+  padding: 1.5rem 1.75rem;
+}
+
+.unesco-tracker__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.15rem;
+  margin: 0 0 0.35rem;
+}
+
+.unesco-tracker__count {
+  margin: 0 0 1rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.unesco-tracker__count strong {
+  color: var(--rust);
+  font-size: 1.1rem;
+}
+
+.unesco-tracker__bar {
+  height: 8px;
+  background: var(--line-soft);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.unesco-tracker__fill {
+  height: 100%;
+  min-width: 4px;
+  background: var(--moss);
+  border-radius: 99px;
+}
