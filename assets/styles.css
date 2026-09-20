@@ -412,3 +412,33 @@ img { max-width: 100%; display: block; }
   margin: 1.75rem 0;
 }
 .inline-photo-pair img { border-radius: 4px; width: 100%; }
+
+.inline-photo-left,
+.inline-photo-right {
+  width: 42%;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.inline-photo-left {
+  float: left;
+  margin-right: 1.5rem;
+}
+
+.inline-photo-right {
+  float: right;
+  margin-left: 1.5rem;
+}
+
+.clear-photos {
+  clear: both;
+}
+
+@media (max-width: 600px) {
+  .inline-photo-left,
+  .inline-photo-right {
+    float: none;
+    width: 100%;
+    margin: 1.75rem 0 0.5rem;
+  }
+}
