@@ -23,6 +23,27 @@
   <p>A running log of our holidays — routes, notes, and the full photo albums from each one.</p>
 </section>
 
+<section class="unesco-tracker">
+  <div class="unesco-tracker__inner">
+    <h2 class="unesco-tracker__title">UNESCO World Heritage Sites</h2>
+    <p class="unesco-tracker__count" id="unesco-count-text"></p>
+    <div class="unesco-tracker__bar">
+      <div class="unesco-tracker__fill" id="unesco-fill"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Update this one number each time you tick off a new site.
+  const sitesVisited = 0;
+  const sitesTotal = 1273; // correct as of the 48th session, Busan, July 2026
+
+  document.getElementById('unesco-count-text').innerHTML =
+    '<strong>' + sitesVisited + '</strong> of ' + sitesTotal.toLocaleString() + ' visited';
+  document.getElementById('unesco-fill').style.width =
+    ((sitesVisited / sitesTotal) * 100) + '%';
+</script>
+  
 <section class="logbook" id="log">
   <div class="logbook__route" aria-hidden="true"></div>
   
