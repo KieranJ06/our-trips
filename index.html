@@ -51,6 +51,73 @@
   document.getElementById('unesco-fill').style.width =
     ((sitesVisited / sitesTotal) * 100) + '%';
 </script>
+
+<section class="unesco-tracker">
+  <div class="unesco-tracker__inner">
+    <h2 class="unesco-tracker__title">Countries visited</h2>
+    <p class="unesco-tracker__count" id="country-count-text"></p>
+    <div class="unesco-tracker__bar">
+      <div class="unesco-tracker__fill" id="country-fill"></div>
+    </div>
+    <button class="country-toggle" id="country-toggle">Show all countries</button>
+    <ol class="country-grid" id="country-grid"></ol>
+  </div>
+</section>
+
+<script>
+  // Update this list as you tick off more countries. Names must match
+  // the spelling in allCountries below exactly.
+  const visitedCountries = [
+    "Australia", "Belgium", "Canada", "Czech Republic", "England",
+    "France", "Italy", "Japan", "Portugal", "Seychelles",
+    "Slovenia", "South Africa", "Spain"
+  ];
+
+  const allCountries = [
+    "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia",
+    "Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium",
+    "Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria",
+    "Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad",
+    "Chile","China","Colombia","Comoros","Congo (Republic of the)","Congo (Democratic Republic of the)",
+    "Costa Rica","Côte d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica",
+    "Dominican Republic","Ecuador","Egypt","El Salvador","England","Equatorial Guinea","Eritrea","Estonia",
+    "Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece",
+    "Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India",
+    "Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya",
+    "Kiribati","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein",
+    "Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands",
+    "Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco",
+    "Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger",
+    "Nigeria","North Korea","North Macedonia","Northern Ireland","Norway","Oman","Pakistan","Palau",
+    "Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar",
+    "Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines",
+    "Samoa","San Marino","São Tomé and Príncipe","Saudi Arabia","Scotland","Senegal","Serbia","Seychelles",
+    "Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa",
+    "South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria",
+    "Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia",
+    "Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United States","Uruguay",
+    "Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Wales","Yemen","Zambia","Zimbabwe"
+  ].sort();
+
+  document.getElementById('country-count-text').innerHTML =
+    '<strong>' + visitedCountries.length + '</strong> of ' + allCountries.length + ' visited';
+  document.getElementById('country-fill').style.width =
+    ((visitedCountries.length / allCountries.length) * 100) + '%';
+
+  const grid = document.getElementById('country-grid');
+  allCountries.forEach(function (country) {
+    const li = document.createElement('li');
+    li.textContent = country;
+    if (visitedCountries.includes(country)) li.classList.add('visited');
+    grid.appendChild(li);
+  });
+
+  const toggleBtn = document.getElementById('country-toggle');
+  toggleBtn.addEventListener('click', function () {
+    grid.classList.toggle('is-open');
+    toggleBtn.textContent = grid.classList.contains('is-open') ? 'Hide countries' : 'Show all countries';
+  });
+</script>
   
 <section class="logbook" id="log">
   <div class="logbook__route" aria-hidden="true"></div>
