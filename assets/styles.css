@@ -645,3 +645,10 @@ img { max-width: 100%; display: block; }
   border-radius: 99px;
   z-index: 2;
 }
+.entry__card.solo-laura {
+  border: 2px solid #6b1626;
+}
+
+.solo-badge.laura {
+  background: #6b1626;
+}
