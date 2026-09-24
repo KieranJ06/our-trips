@@ -105,12 +105,16 @@
     ((visitedCountries.length / allCountries.length) * 100) + '%';
 
   const grid = document.getElementById('country-grid');
-  allCountries.forEach(function (country) {
+ allCountries.forEach(function (country, i) {
     const li = document.createElement('li');
-    li.textContent = country;
+    const num = document.createElement('span');
+    num.className = 'country-num';
+    num.textContent = (i + 1) + '.';
+    li.appendChild(num);
+    li.appendChild(document.createTextNode(' ' + country));
     if (visitedCountries.includes(country)) li.classList.add('visited');
     grid.appendChild(li);
-  });
+});
 
   const toggleBtn = document.getElementById('country-toggle');
   toggleBtn.addEventListener('click', function () {
