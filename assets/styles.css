@@ -600,7 +600,8 @@ img { max-width: 100%; display: block; }
 
 .country-grid {
   margin: 1.5rem 0 0;
-  padding-left: 1.4rem;
+  padding-left: 0;
+  list-style: none;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.4rem 1.5rem;
@@ -613,9 +614,12 @@ img { max-width: 100%; display: block; }
 
 .country-grid.is-open { max-height: 4000px; }
 
-.country-grid li { font-size: 0.92rem; color: #a89f8f; }
-.country-grid li.visited { color: var(--ink); font-weight: 600; }
-.country-grid li.visited::marker { color: var(--rust); font-weight: 700; }
 .country-grid li {
+  font-size: 0.92rem;
+  color: #a89f8f;
   overflow-wrap: anywhere;
 }
+.country-grid li.visited { color: var(--ink); font-weight: 600; }
+
+.country-num { margin-right: 0.3em; }
+.country-grid li.visited .country-num { color: var(--rust); font-weight: 700; }
