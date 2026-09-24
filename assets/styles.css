@@ -623,3 +623,25 @@ img { max-width: 100%; display: block; }
 
 .country-num { margin-right: 0.3em; }
 .country-grid li.visited .country-num { color: var(--rust); font-weight: 700; }
+
+.entry__card {
+  position: relative;
+}
+
+.entry__card.solo-kieran {
+  border: 2px solid #1f4d3a;
+}
+
+.solo-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: #1f4d3a;
+  color: #f5f2ec;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 99px;
+  z-index: 2;
+}
