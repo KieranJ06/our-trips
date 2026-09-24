@@ -13,9 +13,17 @@
 
 <header class="site-header">
   <a class="site-header__mark" href="index.html">Our Trips</a>
-  <nav>
-    <a href="#log">Trips</a>
-  </nav>
+ <nav>
+  <details class="year-nav">
+    <summary>Jump to year</summary>
+    <ul class="year-nav__menu">
+      <li><a href="#y2026">2026</a></li>
+      <li><a href="#y2025">2025</a></li>
+      <li><a href="#y2024">2024</a></li>
+      <li><a href="#y2023">2023</a></li>
+    </ul>
+  </details>
+</nav>
 </header>
 
 <section class="hero">
@@ -47,7 +55,7 @@
 <section class="logbook" id="log">
   <div class="logbook__route" aria-hidden="true"></div>
   
-    <div class="entry">
+    <div class="entry" id="y2023">
     <span class="entry__year">2023</span>
     <a class="entry__card" href="trips/australia-2023.html">
       <div class="entry__thumb" style="background-image: linear-gradient(135deg, #3e6259, #1c2b39);"></div>
@@ -143,7 +151,7 @@
     </a>
   </div>
 
-  <div class="entry">
+ <div class="entry" id="y2024">
     <span class="entry__year">2024</span>
     <a class="entry__card" href="trips/munch-2024.html">
       <div class="entry__thumb" style="background-image: linear-gradient(135deg, #2b473f, #c98a3e);"></div>
@@ -239,7 +247,7 @@
     </a>
   </div>
 
-  <div class="entry">
+<div class="entry" id="y2025">
     <span class="entry__year">2025</span>
     <a class="entry__card" href="trips/barcelona-2025.html">
       <div class="entry__thumb" style="background-image: linear-gradient(135deg, #1c2b39, #b5502c);"></div>
@@ -321,7 +329,7 @@
     </a>
   </div>
   
-  <div class="entry">
+<div class="entry" id="y2026">
     <span class="entry__year">2026</span>
     <a class="entry__card" href="trips/italy-2026.html">
       <div class="entry__thumb" style="background-image: linear-gradient(135deg, #6b7f5e, #b5502c);"></div>
