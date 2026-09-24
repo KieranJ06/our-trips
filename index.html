@@ -382,5 +382,23 @@
   <p>A record of our trips, to share with family, added to after each one.</p>
 </footer>
 
-</body>
+<button class="back-to-top" id="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 19V5M5 12l7-7 7 7"/>
+  </svg>
+</button>
+
+<script>
+  const backToTop = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 500) {
+      backToTop.classList.add('is-visible');
+    } else {
+      backToTop.classList.remove('is-visible');
+    }
+  });
+  backToTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script></body>
 </html>
