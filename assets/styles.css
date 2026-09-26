@@ -652,3 +652,20 @@ img { max-width: 100%; display: block; }
 .solo-badge.laura {
   background: #6b1626;
 }
+
+.country-badge {
+  position: absolute;
+  bottom: 0.65rem;
+  right: 0.65rem;
+  width: 2rem;
+  height: 2rem;
+  z-index: 2;
+  background-color: #000;
+  opacity: 0.82;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
