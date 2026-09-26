@@ -190,7 +190,8 @@ img { max-width: 100%; display: block; }
 .entry__card:hover { transform: translateX(2px); }
 
 .entry__thumb {
-  aspect-ratio: 4 / 3;
+  position: relative;
+   aspect-ratio: 4 / 3;
   background-size: cover;
   background-position: center;
 }
