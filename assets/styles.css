@@ -658,15 +658,18 @@ img { max-width: 100%; display: block; }
   position: absolute;
   bottom: 0.65rem;
   right: 0.65rem;
-  width: 2rem;
-  height: 2rem;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  overflow: hidden;
   z-index: 2;
-  background-color: #000;
-  opacity: 0.82;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+  border: 2px solid rgba(245, 242, 236, 0.9);
+}
+
+.country-badge .fi {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
 }
