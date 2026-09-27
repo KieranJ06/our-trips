@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countries — Our Trips</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="site-header__mark" href="index.html">Our Trips</a>
+  <nav>
+    <a href="index.html">All trips</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Countries visited</h1>
+  <p id="map-count-text" class="map-count"></p>
+</section>
+
+<section class="map-section">
+  <div class="map-frame">
+    <object id="world-map-obj" type="image/svg+xml" data="assets/world-map.svg" aria-label="World map with visited countries highlighted"></object>
+  </div>
+
+  <div class="map-legend">
+    <span class="map-legend__item"><span class="map-legend__swatch visited"></span> Visited</span>
+    <span class="map-legend__item"><span class="map-legend__swatch"></span> Not yet</span>
+  </div>
+
+  <p class="map-note" id="map-note"></p>
+</section>
+
+<footer class="site-footer">
+  <p>A record of our trips, to share with family, added to after each one.</p>
+</footer>
+
+<script>
+  // Update this as you tick off more countries. Codes are ISO 3166-1
+  // alpha-2, matching the ids used in assets/world-map.svg.
+  // A few very small countries (Barbados, Vatican City) aren't drawn as
+  // separate shapes on this map at this scale, so they're listed
+  // separately below rather than coloured in.
+  const visitedCodes = [
+    "au", "be", "ca", "cz", "gb", "fr", "it", "jp", "pt",
+    "sc", "si", "za", "es", "bg", "de", "gr"
+  ];
+
+  const notOnMap = ["Barbados", "Vatican City"];
+
+  const totalCountries = 198;
+  const visitedTotal = visitedCodes.length + notOnMap.length;
+
+  document.getElementById('map-count-text').textContent =
+    visitedTotal + ' of ' + totalCountries + ' visited';
+
+  const note = document.getElementById('map-note');
+  if (notOnMap.length) {
+    note.textContent = 'Also visited, too small to show separately on this map: ' + notOnMap.join(', ') + '.';
+  }
+
+  const mapObject = document.getElementById('world-map-obj');
+  mapObject.addEventListener('load', function () {
+    const svgDoc = mapObject.contentDocument;
+    if (!svgDoc) return;
+    const paths = svgDoc.querySelectorAll('path');
+    paths.forEach(function (path) {
+      const id = path.getAttribute('id');
+      path.style.stroke = '#efeae3';
+      path.style.strokeWidth = '0.5';
+      if (id && visitedCodes.includes(id)) {
+        path.style.fill = '#3e6259';
+      } else {
+        path.style.fill = '#d9d2c4';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
