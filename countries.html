@@ -68,15 +68,29 @@
   mapObject.addEventListener('load', function () {
     const svgDoc = mapObject.contentDocument;
     if (!svgDoc) return;
-    const paths = svgDoc.querySelectorAll('path');
-    paths.forEach(function (path) {
-      const id = path.getAttribute('id');
+
+    // Step 1: colour every path the default "not visited" shade.
+    // This covers every shape whether it sits on its own or is
+    // grouped inside a <g> (islands, overseas territories, etc).
+    svgDoc.querySelectorAll('path').forEach(function (path) {
+      path.style.fill = '#d9d2c4';
       path.style.stroke = '#efeae3';
       path.style.strokeWidth = '0.5';
-      if (id && visitedCodes.includes(id)) {
-        path.style.fill = '#3e6259';
+    });
+
+    // Step 2: for each visited code, find the matching element by id.
+    // Some countries are a single <path id="xx">; others (countries
+    // with islands/territories) are a <g id="xx"> wrapping several
+    // <path> pieces with no id of their own. Handle both.
+    visitedCodes.forEach(function (code) {
+      const el = svgDoc.getElementById(code);
+      if (!el) return;
+      if (el.tagName.toLowerCase() === 'g') {
+        el.querySelectorAll('path').forEach(function (p) {
+          p.style.fill = '#3e6259';
+        });
       } else {
-        path.style.fill = '#d9d2c4';
+        el.style.fill = '#3e6259';
       }
     });
   });
