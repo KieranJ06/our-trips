@@ -732,3 +732,7 @@ img { max-width: 100%; display: block; }
   color: var(--ink-soft);
   font-style: italic;
 }
+.year-nav {
+  position: relative;
+  display: inline-block;
+}
