@@ -36,6 +36,13 @@
   <p class="map-note" id="map-note"></p>
 </section>
 
+<section class="map-section" style="padding-top: 0;">
+  <div class="unesco-tracker__inner">
+    <h2 class="unesco-tracker__title">Full list</h2>
+    <ol class="country-grid is-open" id="full-country-grid"></ol>
+  </div>
+</section>
+
 <footer class="site-footer">
   <p>A record of our trips, to share with family, added to after each one.</p>
 </footer>
@@ -93,6 +100,53 @@
         el.style.fill = '#3e6259';
       }
     });
+  });
+
+  // Full alphabetical list, same source list as the homepage tracker.
+  // Names must match spelling exactly between the two lists.
+  const visitedCountries = [
+    "Australia", "Barbados", "Belgium", "Bulgaria", "Canada", "Czech Republic",
+    "England", "France", "Germany", "Greece", "Italy", "Japan", "Northern Ireland",
+    "Portugal", "Scotland", "Seychelles", "Slovenia", "South Africa", "Spain",
+    "Vatican City", "Wales"
+  ];
+
+  const allCountries = [
+    "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia",
+    "Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium",
+    "Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria",
+    "Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad",
+    "Chile","China","Colombia","Comoros","Congo (Republic of the)","Congo (Democratic Republic of the)",
+    "Costa Rica","Côte d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica",
+    "Dominican Republic","Ecuador","Egypt","El Salvador","England","Equatorial Guinea","Eritrea","Estonia",
+    "Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece",
+    "Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India",
+    "Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya",
+    "Kiribati","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein",
+    "Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands",
+    "Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco",
+    "Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger",
+    "Nigeria","North Korea","North Macedonia","Northern Ireland","Norway","Oman","Pakistan","Palau",
+    "Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar",
+    "Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines",
+    "Samoa","San Marino","São Tomé and Príncipe","Saudi Arabia","Scotland","Senegal","Serbia","Seychelles",
+    "Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa",
+    "South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria",
+    "Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia",
+    "Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United States","Uruguay",
+    "Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Wales","Yemen","Zambia","Zimbabwe"
+  ].sort();
+
+  const fullGrid = document.getElementById('full-country-grid');
+  allCountries.forEach(function (country, i) {
+    const li = document.createElement('li');
+    const num = document.createElement('span');
+    num.className = 'country-num';
+    num.textContent = (i + 1) + '.';
+    li.appendChild(num);
+    li.appendChild(document.createTextNode(' ' + country));
+    if (visitedCountries.includes(country)) li.classList.add('visited');
+    fullGrid.appendChild(li);
   });
 </script>
 
