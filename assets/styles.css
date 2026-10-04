@@ -677,6 +677,26 @@ img { max-width: 100%; display: block; }
   display: block;
 }
 
+
+.country-badge-group {
+  position: absolute;
+  bottom: 0.65rem;
+  right: 0.65rem;
+  display: flex;
+  gap: 0.35rem;
+  z-index: 2;
+}
+
+.country-badge-group img {
+  width: 2.2rem;
+  height: 1.65rem;
+  object-fit: cover;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+  border: 1px solid rgba(245, 242, 236, 0.9);
+  display: block;
+}
+
 /* Countries map page */
 .map-count {
   font-size: 1.1rem;
@@ -736,21 +756,37 @@ img { max-width: 100%; display: block; }
   font-style: italic;
 }
 
-.country-badge-group {
-  position: absolute;
-  bottom: 0.65rem;
-  right: 0.65rem;
-  display: flex;
-  gap: 0.35rem;
-  z-index: 2;
+.on-this-day {
+  max-width: var(--wide-width);
+  margin: 0 auto;
+  padding: 0 1.5rem 1.5rem;
 }
 
-.country-badge-group img {
-  width: 2.2rem;
-  height: 1.65rem;
-  object-fit: cover;
-  border-radius: 3px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
-  border: 1px solid rgba(245, 242, 236, 0.9);
-  display: block;
+.on-this-day__inner {
+  background: var(--moss);
+  color: #f5f2ec;
+  border-radius: 6px;
+  padding: 1.1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
+
+.on-this-day__text {
+  font-size: 0.98rem;
+}
+
+.on-this-day__text strong {
+  color: #e7c9ae;
+}
+
+.on-this-day__link {
+  color: #f5f2ec;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.on-this-day__link:hover { color: #e7c9ae; }
