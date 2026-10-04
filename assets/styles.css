@@ -736,3 +736,21 @@ img { max-width: 100%; display: block; }
   font-style: italic;
 }
 
+.country-badge-group {
+  position: absolute;
+  bottom: 0.65rem;
+  right: 0.65rem;
+  display: flex;
+  gap: 0.35rem;
+  z-index: 2;
+}
+
+.country-badge-group img {
+  width: 2.2rem;
+  height: 1.65rem;
+  object-fit: cover;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+  border: 1px solid rgba(245, 242, 236, 0.9);
+  display: block;
+}
