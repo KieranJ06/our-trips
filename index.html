@@ -73,34 +73,52 @@
   ];
 
   (function () {
-    const today = new Date();
-    const todayVal = (today.getMonth() + 1) * 100 + today.getDate();
-    const thisYear = today.getFullYear();
+  const today = new Date();
+  const todayVal = (today.getMonth() + 1) * 100 + today.getDate();
+  const thisYear = today.getFullYear();
 
-    const match = datedTrips.find(function (trip) {
-      const startVal = trip.startMonth * 100 + trip.startDay;
-      const endVal = trip.endMonth * 100 + trip.endDay;
-      return todayVal >= startVal && todayVal <= endVal;
-    });
+  const matches = datedTrips.filter(function (trip) {
+    const startVal = trip.startMonth * 100 + trip.startDay;
+    const endVal = trip.endMonth * 100 + trip.endDay;
+    return todayVal >= startVal && todayVal <= endVal;
+  });
 
-    if (!match) return;
+  if (!matches.length) return;
 
+  const container = document.getElementById('on-this-day');
+  const inner = container.querySelector('.on-this-day__inner');
+  inner.innerHTML = '';
+
+  matches.forEach(function (match) {
     const yearsAgo = thisYear - match.year;
     let phrase;
     if (yearsAgo === 0) {
-      phrase = 'You\'re in the middle of <strong>' + match.name + '</strong> right now.';
+      phrase = 'We\'re in the middle of <strong>' + match.name + '</strong> right now.';
     } else if (yearsAgo === 1) {
-      phrase = '<strong>1 year ago today</strong>, you were in ' + match.name + '.';
+      phrase = '<strong>1 year ago today</strong>, we were in ' + match.name + '.';
     } else {
-      phrase = '<strong>' + yearsAgo + ' years ago today</strong>, you were in ' + match.name + '.';
+      phrase = '<strong>' + yearsAgo + ' years ago today</strong>, we were in ' + match.name + '.';
     }
 
-    document.getElementById('on-this-day-text').innerHTML = phrase;
-    const link = document.getElementById('on-this-day-link');
+    const row = document.createElement('div');
+    row.className = 'on-this-day__row';
+
+    const text = document.createElement('p');
+    text.className = 'on-this-day__text';
+    text.innerHTML = phrase;
+
+    const link = document.createElement('a');
+    link.className = 'on-this-day__link';
     link.href = 'trips/' + match.slug + '.html';
     link.textContent = 'See the trip →';
-    document.getElementById('on-this-day').style.display = 'block';
-  })();
+
+    row.appendChild(text);
+    row.appendChild(link);
+    inner.appendChild(row);
+  });
+
+  container.style.display = 'block';
+})();
 </script>
   
 <section class="unesco-tracker">
