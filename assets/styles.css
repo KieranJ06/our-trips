@@ -790,3 +790,17 @@ img { max-width: 100%; display: block; }
   white-space: nowrap;
 }
 .on-this-day__link:hover { color: #e7c9ae; }
+
+.on-this-day__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.on-this-day__row + .on-this-day__row {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(245, 242, 236, 0.25);
+}
