@@ -31,7 +31,78 @@
   <h1>Where we've been, kept in one place.</h1>
   <p>A running log of our holidays — routes, notes, and the full photo albums from each one.</p>
 </section>
+<section class="on-this-day" id="on-this-day" style="display: none;">
+  <div class="on-this-day__inner">
+    <p class="on-this-day__text" id="on-this-day-text"></p>
+    <a class="on-this-day__link" id="on-this-day-link">See the trip &rarr;</a>
+  </div>
+</section>
 
+<script>
+  // Trips with exact day-level dates. Add more as you confirm exact
+  // dates for the 2026 trips (currently only approximate on the site).
+  // month is 1-12.
+  const datedTrips = [
+    { slug: "australia-2023", name: "Australia", year: 2023, startMonth: 3, startDay: 16, endMonth: 3, endDay: 28 },
+    { slug: "cinque-terre-2023", name: "Cinque Terre", year: 2023, startMonth: 4, startDay: 7, endMonth: 4, endDay: 11 },
+    { slug: "peak-district-2023", name: "the Peak District", year: 2023, startMonth: 5, startDay: 6, endMonth: 5, endDay: 8 },
+    { slug: "fuerteventura-2023", name: "Fuerteventura", year: 2023, startMonth: 6, startDay: 1, endMonth: 6, endDay: 11 },
+    { slug: "tech-fest-2023", name: "Tech Fest", year: 2023, startMonth: 6, startDay: 29, endMonth: 7, endDay: 3 },
+    { slug: "brussels-2023", name: "Brussels", year: 2023, startMonth: 8, startDay: 25, endMonth: 8, endDay: 28 },
+    { slug: "south-africa-seychelles-2023", name: "South Africa & Seychelles", year: 2023, startMonth: 9, startDay: 21, endMonth: 10, endDay: 7 },
+    { slug: "christmas-lake-district-2023", name: "the Lake District", year: 2023, startMonth: 12, startDay: 20, endMonth: 12, endDay: 23 },
+    { slug: "munch-2024", name: "Munch", year: 2024, startMonth: 3, startDay: 1, endMonth: 3, endDay: 4 },
+    { slug: "turin-2024", name: "Turin", year: 2024, startMonth: 3, startDay: 16, endMonth: 3, endDay: 18 },
+    { slug: "barcelona-2024", name: "Barcelona", year: 2024, startMonth: 3, startDay: 30, endMonth: 4, endDay: 3 },
+    { slug: "peak-district-2024", name: "the Peak District", year: 2024, startMonth: 5, startDay: 3, endMonth: 5, endDay: 6 },
+    { slug: "le-mans-2024", name: "Le Mans", year: 2024, startMonth: 6, startDay: 12, endMonth: 6, endDay: 18 },
+    { slug: "fuerteventura-2024", name: "Fuerteventura", year: 2024, startMonth: 6, startDay: 28, endMonth: 7, endDay: 9 },
+    { slug: "canada-2024", name: "Canada", year: 2024, startMonth: 9, startDay: 21, endMonth: 10, endDay: 8 },
+    { slug: "christmas-lake-district-2024", name: "the Lake District", year: 2024, startMonth: 12, startDay: 19, endMonth: 12, endDay: 22 },
+    { slug: "barcelona-2025", name: "Barcelona", year: 2025, startMonth: 4, startDay: 19, endMonth: 4, endDay: 23 },
+    { slug: "lake-district-birthday-2025", name: "the Lake District", year: 2025, startMonth: 5, startDay: 2, endMonth: 5, endDay: 5 },
+    { slug: "madeira-2025", name: "Madeira", year: 2025, startMonth: 5, startDay: 17, endMonth: 5, endDay: 26 },
+    { slug: "cornwall-2025", name: "Cornwall", year: 2025, startMonth: 6, startDay: 27, endMonth: 6, endDay: 29 },
+    { slug: "lake-district-2025", name: "the Lake District", year: 2025, startMonth: 8, startDay: 7, endMonth: 8, endDay: 10 },
+    { slug: "fuerteventura-2025", name: "Fuerteventura", year: 2025, startMonth: 9, startDay: 24, endMonth: 10, endDay: 5 },
+    { slug: "prague-2025", name: "Prague", year: 2025, startMonth: 11, startDay: 19, endMonth: 11, endDay: 23 },
+    { slug: "italy-2026", name: "Bologna & the Via degli Dei", year: 2026, startMonth: 4, startDay: 3, endMonth: 4, endDay: 8 },
+    { slug: "japan-2026", name: "Japan", year: 2026, startMonth: 5, startDay: 23, endMonth: 6, endDay: 7 },
+    { slug: "madeira-2026", name: "Madeira", year: 2026, startMonth: 6, startDay: 27, endMonth: 7, endDay: 20 },
+    { slug: "slovenia-2026", name: "Slovenia", year: 2026, startMonth: 8, startDay: 25, endMonth: 9, endDay: 7 }
+  ];
+
+  (function () {
+    const today = new Date();
+    const todayVal = (today.getMonth() + 1) * 100 + today.getDate();
+    const thisYear = today.getFullYear();
+
+    const match = datedTrips.find(function (trip) {
+      const startVal = trip.startMonth * 100 + trip.startDay;
+      const endVal = trip.endMonth * 100 + trip.endDay;
+      return todayVal >= startVal && todayVal <= endVal;
+    });
+
+    if (!match) return;
+
+    const yearsAgo = thisYear - match.year;
+    let phrase;
+    if (yearsAgo === 0) {
+      phrase = 'You\'re in the middle of <strong>' + match.name + '</strong> right now.';
+    } else if (yearsAgo === 1) {
+      phrase = '<strong>1 year ago today</strong>, you were in ' + match.name + '.';
+    } else {
+      phrase = '<strong>' + yearsAgo + ' years ago today</strong>, you were in ' + match.name + '.';
+    }
+
+    document.getElementById('on-this-day-text').innerHTML = phrase;
+    const link = document.getElementById('on-this-day-link');
+    link.href = 'trips/' + match.slug + '.html';
+    link.textContent = 'See the trip →';
+    document.getElementById('on-this-day').style.display = 'block';
+  })();
+</script>
+  
 <section class="unesco-tracker">
   <div class="unesco-tracker__inner">
     <h2 class="unesco-tracker__title">UNESCO World Heritage Sites</h2>
