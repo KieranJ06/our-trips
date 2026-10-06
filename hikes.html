@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hikes — Our Trips</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  /* Hikes page. Reuses .unesco-tracker and .country-toggle from styles.css;
+     only the pieces below are new. */
+  .hike-stats {
+    max-width: var(--wide-width);
+    margin: 0 auto;
+    padding: 0 1.5rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 640px) { .hike-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 900px) { .hike-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+  .hike-stat {
+    background: var(--paper-raised);
+    border-radius: 6px;
+    padding: 1.25rem 1.4rem 1.4rem;
+  }
+  .hike-stat__label {
+    margin: 0 0 0.6rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rust);
+  }
+  .hike-stat__name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.2rem;
+    line-height: 1.25;
+    color: var(--ink);
+    margin: 0 0 0.2rem;
+  }
+  .hike-stat__meta { margin: 0.35rem 0 0; font-size: 0.9rem; color: var(--ink-soft); }
+  .hike-stat ol { margin: 0; padding-left: 1.3rem; font-size: 0.93rem; color: var(--ink-soft); }
+  .hike-stat ol li { padding: 0.18rem 0; }
+  .hike-stat ol li span { color: var(--ink); font-weight: 600; }
+
+  .hike-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+
+  .peak-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .peak-panel.is-open { max-height: 12000px; }
+
+  .peak-region {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1rem;
+    margin: 1.5rem 0 0.4rem;
+    color: var(--ink);
+  }
+  .peak-region span { font-family: var(--font-body); font-size: 0.85rem; color: var(--ink-soft); font-weight: 400; margin-left: 0.4rem; }
+  .peak-panel > .peak-region:first-child { margin-top: 1.5rem; }
+
+  .peak-list { list-style: none; margin: 0; padding: 0; }
+  .peak-list li {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.1rem 1rem;
+    padding: 0.38rem 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 0.92rem;
+    color: #a89f8f;
+  }
+  .peak-list li.visited { color: var(--ink); font-weight: 600; }
+  .peak-list__name { flex: 1 1 12rem; overflow-wrap: anywhere; }
+  .peak-list__meta { color: var(--ink-soft); font-weight: 400; font-size: 0.85rem; white-space: nowrap; }
+  .peak-list li:not(.visited) .peak-list__meta { color: #a89f8f; }
+  .peak-list li.visited .peak-list__meta strong { color: var(--rust); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="site-header__mark" href="index.html">Our Trips</a>
+  <nav>
+    <a href="countries.html">Countries</a>
+    <a href="hikes.html">Hikes</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Hills, peaks, and the odd col.</h1>
+  <p>Every summit bagged, and how far through the lists we are.</p>
+</section>
+
+<section class="unesco-tracker" id="peaks">
+  <div class="unesco-tracker__inner">
+    <h2 class="unesco-tracker__title">Peaks &amp; cols</h2>
+    <p class="unesco-tracker__count" id="pc-count-text"></p>
+    <div class="hike-actions">
+      <button class="country-toggle" id="peaks-toggle" type="button"></button>
+      <button class="country-toggle" id="cols-toggle" type="button"></button>
+    </div>
+    <div class="peak-panel" id="peaks-panel"><ul class="peak-list" id="peaks-list"></ul></div>
+    <div class="peak-panel" id="cols-panel"><ul class="peak-list" id="cols-list"></ul></div>
+  </div>
+</section>
+
+<section class="hike-stats" id="hike-stats" aria-label="Peak records"></section>
+
+<section class="unesco-tracker" id="welsh100">
+  <div class="unesco-tracker__inner">
+    <h2 class="unesco-tracker__title">Welsh 100</h2>
+    <p class="unesco-tracker__count" id="w-count-text"></p>
+    <div class="unesco-tracker__bar">
+      <div class="unesco-tracker__fill" id="w-fill"></div>
+    </div>
+    <button class="country-toggle" id="w-toggle" type="button">Show all Welsh 100</button>
+    <div class="peak-panel" id="w-panel"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>Peak and col data from Summit Bag. More lists to come.</p>
+</footer>
+
+<button class="back-to-top" id="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 19V5M5 12l7-7 7 7"/>
+  </svg>
+</button>
+
+<script>
+// ---------- Summit Bag data ----------
+// [name, height (m), times bagged, first bagged, most recent]
+const SB = {
+Peaks: [
+["Mont Tàber", 17, 6, "2024-03-30", "2025-04-19"],
+["Chapman's Hill", 287, 5, "2021-01-10", "2023-10-15"],
+["Summer Hill", 383, 4, "2019-10-19", "2025-01-04"],
+["Worcestershire Beacon", 425, 4, "2019-10-19", "2025-01-04"],
+["Black Hill", 307, 3, "2020-06-13", "2025-01-04"],
+["Broadway Hill", 310, 3, "2020-07-24", "2020-07-24"],
+["Encumeada Baixa", 1655, 3, "2025-05-25", "2026-07-01"],
+["Beacon Hill", 298, 3, "2023-11-19", "2025-12-29"],
+["Pinnacle Hill", 357, 3, "2020-06-13", "2025-01-04"],
+["Herefordshire Beacon", 338, 3, "2020-06-13", "2024-08-12"],
+["Tinker's Hill", 213, 2, "2020-06-13", "2022-07-10"],
+["Perseverance Hill", 324, 2, "2020-06-13", "2025-01-04"],
+["Jubilee Hill", 328, 2, "2020-06-13", "2025-01-04"],
+["Shooting Box", 487, 2, "2024-04-20", "2025-05-10"],
+["Craig y Fan Ddu", 683, 2, "2022-04-02", "2025-03-15"],
+["Rhiw yr Ysgyfarnog", 736, 2, "2022-04-02", "2025-03-15"],
+["Cefn Cul", 740, 2, "2022-04-02", "2025-03-15"],
+["Millennium Hill", 327, 2, "2020-06-13", "2022-07-10"],
+["Tossal de Mullapans", 508, 2, "2024-04-02", "2025-04-20"],
+["La Trona", 573, 2, "2024-04-02", "2025-04-20"],
+["Roca dels Corbs", 646, 2, "2024-04-02", "2025-04-20"],
+["Gwaun Cerrig Llwydion", 730, 2, "2022-04-02", "2025-03-15"],
+["Long Mynd - Pole Bank", 517, 2, "2024-04-20", "2025-05-10"],
+["Fan y Big", 717, 2, "2022-04-02", "2025-03-15"],
+["Bwlch y Ddwyallt", 754, 2, "2022-04-02", "2025-03-15"],
+["Cribyn", 794, 2, "2022-04-02", "2025-03-15"],
+["Craig Gwaun Taf", 826, 2, "2022-04-02", "2025-03-15"],
+["Corn Du", 872, 2, "2022-04-02", "2025-03-15"],
+["Pen y Fan", 886, 2, "2022-04-02", "2025-03-15"],
+["Mt. Meshimori", 782, 1, "2026-06-01", "2026-06-01"],
+["Montaña del Cuervo", 96, 1, "2022-05-24", "2022-05-24"],
+["Bayuyo", 272, 1, "2024-07-06", "2024-07-06"],
+["Roques del Camí de les Ermites", 918, 1, "2025-04-20", "2025-04-20"],
+["Roca 459", 1036, 1, "2025-04-20", "2025-04-20"],
+["Roca 461", 1046, 1, "2025-04-20", "2025-04-20"],
+["La Barretina del Patriarca", 1111, 1, "2025-04-20", "2025-04-20"],
+["Agulleta d'en Pany", 1174, 1, "2025-04-20", "2025-04-20"],
+["Roca 311", 1198, 1, "2025-04-20", "2025-04-20"],
+["Birdlip Peak", 254, 1, "2021-05-07", "2021-05-07"],
+["Shab Hill", 281, 1, "2021-05-07", "2021-05-07"],
+["Allt Fach", 463, 1, "2025-04-26", "2025-04-26"],
+["Y Grib", 640, 1, "2020-07-25", "2020-07-25"],
+["Twyn Mwyalchod", 642, 1, "2022-04-02", "2022-04-02"],
+["Pen Trumau", 707, 1, "2020-07-25", "2020-07-25"],
+["Pen y Manllywn", 775, 1, "2020-07-25", "2020-07-25"],
+["Kinder Low", 633, 1, "2024-05-04", "2024-05-04"],
+["Grindslow Knoll", 601, 1, "2024-05-04", "2024-05-04"],
+["Hangmans Hill", 276, 1, "2020-06-13", "2020-06-13"],
+["End Hill", 328, 1, "2020-06-13", "2020-06-13"],
+["Sugarloaf Hill", 369, 1, "2024-10-20", "2024-10-20"],
+["Clent Hill - The Four Stones", 304, 1, "2021-05-09", "2021-05-09"],
+["Beacon Hill", 39, 1, "2024-09-30", "2024-09-30"],
+["The Big Beehive", 2270, 1, "2024-09-24", "2024-09-24"],
+["Devil's Thumb", 2458, 1, "2024-09-24", "2024-09-24"],
+["Ruivo", 1862, 1, "2025-05-25", "2025-05-25"],
+["Grande", 1654, 1, "2026-06-28", "2026-06-28"],
+["El Cigronet", 1066, 1, "2025-04-20", "2025-04-20"],
+["Colle della Guardia", 280, 1, "2026-04-05", "2026-04-05"],
+["Puig de Sant Antoni", 207, 1, "2025-04-21", "2025-04-21"],
+["La Trinitat", 192, 1, "2025-04-21", "2025-04-21"],
+["Turó de les Tres Creus", 185, 1, "2025-04-22", "2025-04-22"],
+["Turó de la Trinitat", 175, 1, "2025-04-21", "2025-04-21"],
+["Sant Jeroni", 1238, 1, "2025-04-20", "2025-04-20"],
+["La Panxa del Bisbe", 1047, 1, "2025-04-20", "2025-04-20"],
+["Magdalena Inferior", 1118, 1, "2025-04-20", "2025-04-20"],
+["Gorra Marinera", 1098, 1, "2025-04-20", "2025-04-20"],
+["Cara de Mico", 1063, 1, "2025-04-20", "2025-04-20"],
+["El Tibidabo", 512, 1, "2024-04-01", "2024-04-01"],
+["Penya del Llamp", 246, 1, "2025-04-21", "2025-04-21"],
+["Turó de Mont", 440, 1, "2024-04-01", "2024-04-01"],
+["Malo Kladivo / Kleiner Hainschturm", 2036, 1, "2026-08-30", "2026-08-30"],
+["Mali turn", 1937, 1, "2026-08-30", "2026-08-30"],
+["Toplar", 2000, 1, "2026-08-30", "2026-08-30"],
+["Mala Tičarica", 2072, 1, "2026-09-04", "2026-09-04"],
+["Veliki vrh / Hochturm", 2088, 1, "2026-08-30", "2026-08-30"],
+["Kladivo / Hainschturm", 2094, 1, "2026-08-30", "2026-08-30"],
+["Monte dei Cappuccini", 284, 1, "2024-03-17", "2024-03-17"],
+["Kofce gora / Hüttenberg", 1967, 1, "2026-08-30", "2026-08-30"],
+["Dunstanburgh Castle", 36, 1, "2023-05-27", "2023-05-27"],
+["Durdham Down", 99, 1, "2021-07-17", "2021-07-17"],
+["Blakeway Coppice", 273, 1, "2024-01-21", "2024-01-21"],
+["Observatory Hill", 102, 1, "2021-07-17", "2021-07-17"],
+["Old John Tower", 212, 1, "2025-12-27", "2025-12-27"],
+["Beacon Hill", 248, 1, "2025-12-27", "2025-12-27"],
+["Rednal Hill", 268, 1, "2025-12-29", "2025-12-29"],
+["Crickley Hill", 273, 1, "2021-05-07", "2021-05-07"],
+["The Four Stones", 309, 1, "2021-05-09", "2021-05-09"],
+["Swinyard Hill", 272, 1, "2020-06-13", "2020-06-13"],
+["Midsummer Hill", 284, 1, "2020-06-13", "2020-06-13"],
+["North Hill", 397, 1, "2019-10-19", "2019-10-19"],
+["Parkhouse Hill", 375, 1, "2024-05-05", "2024-05-05"],
+["Tegg's Nose", 382, 1, "2025-03-29", "2025-03-29"],
+["High Wheeldon", 422, 1, "2024-05-05", "2024-05-05"],
+["Chrome Hill", 439, 1, "2024-05-05", "2024-05-05"],
+["Brimham Rocks", 301, 1, "2021-09-23", "2021-09-23"],
+["Calton Hill", 106, 1, "2021-11-30", "2021-11-30"],
+["Ragged Stone Hill", 254, 1, "2020-06-13", "2020-06-13"],
+["Pen y Grib", 493, 1, "2020-07-25", "2020-07-25"],
+["Wansfell Pike", 484, 1, "2024-12-19", "2024-12-19"],
+["Clee Burf", 511, 1, "2026-07-18", "2026-07-18"],
+["Shutlingsloe", 506, 1, "2025-03-29", "2025-03-29"],
+["Mam Tor", 517, 1, "2023-09-08", "2023-09-08"],
+["Cleeve Hill", 330, 1, "2021-04-05", "2021-04-05"],
+["Stiperstones", 537, 1, "2024-11-02", "2024-11-02"],
+["Shining Tor", 559, 1, "2025-03-29", "2025-03-29"],
+["Orrest Head", 238, 1, "2025-08-08", "2025-08-08"],
+["Baystones", 487, 1, "2024-12-19", "2024-12-19"],
+["Birkhouse Moor", 718, 1, "2025-05-03", "2025-05-03"],
+["Striding Edge", 863, 1, "2025-05-03", "2025-05-03"],
+["Catstye Cam", 890, 1, "2025-05-03", "2025-05-03"],
+["Helvellyn", 950, 1, "2025-05-03", "2025-05-03"],
+["Rannerdale Knotts", 355, 1, "2025-05-04", "2025-05-04"],
+["Walla Crag", 379, 1, "2023-12-22", "2023-12-22"],
+["Blunt Top", 901, 1, "2025-08-10", "2025-08-10"],
+["Broad Crag", 935, 1, "2025-08-10", "2025-08-10"],
+["Scafell Pike", 978, 1, "2025-08-10", "2025-08-10"],
+["Mynydd Llysiau", 662, 1, "2020-07-25", "2020-07-25"],
+["Waun Lefrith", 676, 1, "2025-04-26", "2025-04-26"],
+["Bannau Sir Gaer - Picws Du", 749, 1, "2025-04-26", "2025-04-26"],
+["Fan Hir", 760, 1, "2025-04-26", "2025-04-26"],
+["Fan Brycheiniog - Trig Point", 802, 1, "2025-04-26", "2025-04-26"],
+["Waun Fach", 811, 1, "2020-07-25", "2020-07-25"]
+],
+Cols: [
+["Bwlch ar y Fan", 599, 2, "2022-04-02", "2025-03-15"],
+["Craig Cwm-Oergwm", 700, 2, "2022-04-02", "2025-03-15"],
+["Les Baranes", 621, 2, "2024-04-02", "2025-04-20"],
+["Jujo Pass", 569, 1, "2026-06-01", "2026-06-01"],
+["Coll de les Pinasses", 1140, 1, "2025-04-20", "2025-04-20"],
+["Hollins Cross", 388, 1, "2023-09-08", "2023-09-08"],
+["Bwlch Bach a'r Grib", 460, 1, "2020-07-25", "2020-07-25"],
+["Esk Hause", 761, 1, "2025-08-10", "2025-08-10"],
+["Wiwaxy Gap", 2500, 1, "2024-09-23", "2024-09-23"],
+["Broad Crag Col", 878, 1, "2025-08-10", "2025-08-10"],
+["El Collet", 298, 1, "2025-04-21", "2025-04-21"],
+["Štapce", 1851, 1, "2026-09-04", "2026-09-04"]
+]
+};
+
+const fmtDate = d => new Date(d + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+const fmtH = n => n.toLocaleString('en-GB') + ' m';
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const sum = a => a.reduce((x, y) => x + y, 0);
+
+function bindToggle(btn, panel, label) {
+  const set = () => { btn.textContent = (panel.classList.contains('is-open') ? 'Hide ' : 'Show all ') + label; };
+  set();
+  btn.addEventListener('click', () => { panel.classList.toggle('is-open'); set(); });
+}
+
+// ---------- Peaks & cols ----------
+const peaks = SB.Peaks.map(([name, h, n, first, last]) => ({ name, h, n, first, last }));
+const cols  = SB.Cols.map(([name, h, n, first, last]) => ({ name, h, n, first, last }));
+
+document.getElementById('pc-count-text').innerHTML =
+  '<strong>' + peaks.length + '</strong> peaks and <strong>' + cols.length + '</strong> cols bagged \u00b7 ' +
+  sum(peaks.map(p => p.n)) + ' peak bags in total';
+
+function fillList(id, rows) {
+  document.getElementById(id).innerHTML = [...rows].sort((a, b) => b.h - a.h).map(p =>
+    '<li class="visited"><span class="peak-list__name">' + esc(p.name) + '</span>' +
+    '<span class="peak-list__meta">' + (p.first === p.last ? fmtDate(p.first) : fmtDate(p.first) + ' \u2013 ' + fmtDate(p.last)) +
+    ' \u00b7 <strong>' + p.n + '\u00d7</strong> \u00b7 ' + fmtH(p.h) + '</span></li>').join('');
+}
+fillList('peaks-list', peaks);
+fillList('cols-list', cols);
+bindToggle(document.getElementById('peaks-toggle'), document.getElementById('peaks-panel'), 'peaks');
+bindToggle(document.getElementById('cols-toggle'), document.getElementById('cols-panel'), 'cols');
+
+// ---------- Top X cards (peaks only) ----------
+const top5 = [...peaks].sort((a, b) => b.h - a.h).slice(0, 5);
+const maxN = Math.max(...peaks.map(p => p.n));
+const mostBagged = peaks.filter(p => p.n === maxN);
+const latest = peaks.map(p => p.last).sort().pop();
+const mostRecent = peaks.filter(p => p.last === latest);
+const earliest = peaks.map(p => p.first).sort()[0];
+const longest = peaks.filter(p => p.first === earliest);
+
+const single = (label, ps, meta) =>
+  '<div class="hike-stat"><p class="hike-stat__label">' + label + '</p>' +
+  ps.map(p => '<p class="hike-stat__name">' + esc(p.name) + '</p>').join('') +
+  '<p class="hike-stat__meta">' + meta + '</p></div>';
+
+document.getElementById('hike-stats').innerHTML =
+  '<div class="hike-stat"><p class="hike-stat__label">Top 5 highest</p><ol>' +
+    top5.map(p => '<li><span>' + esc(p.name) + '</span> \u00b7 ' + fmtH(p.h) + '</li>').join('') + '</ol></div>' +
+  single('Most bagged', mostBagged, maxN + '\u00d7 \u00b7 first ' + fmtDate(mostBagged[0].first)) +
+  single('Most recent', mostRecent, fmtDate(latest) + ' \u00b7 ' + fmtH(mostRecent[0].h)) +
+  single('Longest-standing', longest, 'First bagged ' + fmtDate(earliest) + (longest.length > 1 ? ' (' + longest.length + '-way tie)' : ''));
+
+// ---------- Welsh 100 ----------
+// region | name | height (m) | optional bagged date (YYYY-MM-DD)
+const RAW = `
+Gwynedd|Snowdon - Yr Wyddfa|1085
+Gwynedd|Crib y Ddysgl|1065
+Gwynedd|Glyder Fawr|1001
+Gwynedd|Glyder Fach|994
+Gwynedd|Pen yr Ole Wen|979
+Gwynedd|Foel Grach|975
+Gwynedd|Yr Elen|963
+Gwynedd|Y Garn|946
+Gwynedd|Foel-fras|944
+Gwynedd|Garnedd Uchaf|925
+Gwynedd|Elidir Fawr|924
+Gwynedd|Crib Goch|924
+Gwynedd|Tryfan|918
+Gwynedd|Aran Fawddwy|906
+Gwynedd|Y Lliwedd|898
+Gwynedd|Cadair Idris - Penygadair|893
+Gwynedd|Aran Benllyn|885
+Gwynedd|Moel Siabod|872
+Gwynedd|Mynydd Moel|864
+Gwynedd|Arenig Fawr|854
+Gwynedd|Llwytmor|847
+Gwynedd|Pen yr Helgi Du|833
+Gwynedd|Foel-goch|831
+Gwynedd|Carnedd y Filiast|821
+Gwynedd|Mynydd Perfedd|813
+Gwynedd|Y Foel Goch|807
+Gwynedd|Bera Bach|807
+Gwynedd|Bera Mawr|794
+Gwynedd|Craig Cwm Amarch|792
+Gwynedd|Moel Hebog|784
+Gwynedd|Glasgwm|780
+Gwynedd|Drum|771
+Gwynedd|Moelwyn Mawr|770
+Gwynedd|Gallt yr Ogof|763
+Gwynedd|Drosgl|757
+Gwynedd|Y Llethr|755
+Gwynedd|Diffwys|750
+Gwynedd|Moel Llyfnant|750
+Gwynedd|Yr Aran|747
+Gwynedd|Craig Cwm Silyn|734
+Gwynedd|Rhobell Fawr|734
+Gwynedd|Moel Eilio|726
+Gwynedd|Rhinog Fawr|721
+Gwynedd|Moelwyn Bach|712
+Gwynedd|Rhinog Fach|712
+Gwynedd|Garnedd-goch|700
+Gwynedd|Allt-fawr|698
+Gwynedd|Mynydd Mawr|698
+Gwynedd|Cnicht|691
+Gwynedd|Foel Hafod-fynydd|689
+Gwynedd|Arenig Fach|689
+Gwynedd|Carnedd y Ddelw|686
+Gwynedd|Gwaun y Llwyni|686
+Gwynedd|Pen y Brynfforchog|685
+Gwynedd|Creigiau Gleision|676
+Gwynedd|Maesglase (old GR) - Maen Du|675
+Gwynedd|Moel Druman|675
+Gwynedd|Moel Cynghorion|674
+Gwynedd|Ysgafell Wen|672
+Gwynedd|Waun-oer|670
+Gwynedd|Esgeiriau Gwynion|670
+Gwynedd|Carnedd y Filiast|669
+Gwynedd|Tarren y Gesail|667
+Conwy|Carnedd Llewelyn|1062
+Conwy|Carnedd Dafydd|1045
+Conwy|Pen Llithrig y Wrach|799
+Conwy|Trum y Ddysgl|710
+Conwy|Mynydd Drws-y-coed|697
+Powys|Pen y Fan|886|2022-04-02
+Powys|Corn Du|872|2022-04-02
+Powys|Cadair Berwyn|832
+Powys|Moel Sych|827
+Powys|Fan Brycheiniog - Twr y Fan Foel|803
+Powys|Cribyn|794|2022-04-02
+Powys|Cadair Bronwen|783
+Powys|Waun Rydd|769
+Powys|Fan Hir|760|2025-04-26
+Powys|Bwlch y Ddwyallt|754|2022-04-02
+Powys|Tomle|741
+Powys|Fan Fawr|734
+Powys|Fan Gyhirych|726
+Powys|Fan y Big|717|2022-04-02
+Powys|Foel Wen|691
+Powys|Mynydd Tarw|679
+Powys|Godor|679
+Powys|Fan Fraith|668
+Powys|Cyrniau Nod|666
+Monmouthshire|Waun Fach|811|2020-07-25
+Monmouthshire|Pen y Gadair Fawr|800
+Monmouthshire|Pen Allt-mawr|720
+Monmouthshire|Rhos Dirion|713
+Monmouthshire|Black Mountain|704
+Monmouthshire|Pen Cerrig-calch|702
+Monmouthshire|Twmpa|689
+Monmouthshire|Chwarel y Fan|679
+Ceredigion|Pumlumon Fawr|753
+Ceredigion|Pen Pumlumon Arwystli|739
+Ceredigion|Pen Pumlumon Llygad-bychan|726
+Ceredigion|Y Garn|684
+Carmarthenshire|Bannau Sir Gaer - Picws Du|749|2025-04-26
+`.trim().split('\n').map(l => {
+  const [region, name, h, date] = l.split('|');
+  return { region, name, h: +h, date: date || null };
+});
+
+const wBagged = RAW.filter(p => p.date).length;
+document.getElementById('w-count-text').innerHTML = '<strong>' + wBagged + '</strong> of ' + RAW.length + ' climbed';
+document.getElementById('w-fill').style.width = ((wBagged / RAW.length) * 100) + '%';
+
+const regions = [...new Set(RAW.map(p => p.region))];
+document.getElementById('w-panel').innerHTML = regions.map(r => {
+  const ps = RAW.filter(p => p.region === r);
+  const b = ps.filter(p => p.date).length;
+  return '<h3 class="peak-region">' + r + '<span>' + b + ' of ' + ps.length + '</span></h3><ul class="peak-list">' +
+    ps.map(p => '<li' + (p.date ? ' class="visited"' : '') + '><span class="peak-list__name">' + esc(p.name) + '</span>' +
+      '<span class="peak-list__meta">' + (p.date ? fmtDate(p.date) + ' \u00b7 ' : '') + fmtH(p.h) + '</span></li>').join('') +
+    '</ul>';
+}).join('');
+bindToggle(document.getElementById('w-toggle'), document.getElementById('w-panel'), 'Welsh 100');
+
+// ---------- Back to top ----------
+const backToTop = document.getElementById('back-to-top');
+window.addEventListener('scroll', function () {
+  backToTop.classList.toggle('is-visible', window.scrollY > 500);
+});
+backToTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+</script>
+</body>
+</html>
