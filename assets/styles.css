@@ -392,6 +392,9 @@ img { max-width: 100%; display: block; }
   font-size: 0.88rem;
   border-top: 1px solid var(--line-soft);
 }
+
+
+/* ============================================
 /* Inline photos within trip write-ups */
 .inline-photo {
   width: 100%;
@@ -412,11 +415,16 @@ img { max-width: 100%; display: block; }
   gap: 0.75rem;
   margin: 1.75rem 0;
 }
-.inline-photo-pair img { border-radius: 4px; width: 100%; }
 
+.inline-photo-pair img {
+  border-radius: 4px;
+  width: 100%;
+}
+
+/* Floated photos */
 .inline-photo-left,
 .inline-photo-right {
-  width: 42%;
+  width: 32%;
   border-radius: 4px;
   margin-bottom: 0.5rem;
 }
@@ -431,10 +439,16 @@ img { max-width: 100%; display: block; }
   margin-left: 1.5rem;
 }
 
+/* Portrait photos: add alongside left/right, e.g. class="inline-photo-right inline-photo-portrait" */
+.inline-photo-portrait {
+  width: 30%;
+}
+
 .clear-photos {
   clear: both;
 }
 
+/* Phones: photos go full width */
 @media (max-width: 600px) {
   .inline-photo-left,
   .inline-photo-right {
@@ -443,35 +457,9 @@ img { max-width: 100%; display: block; }
     margin: 1.75rem 0 0.5rem;
   }
 }
-.inline-photo-left,
-.inline-photo-right {
-  width: 42%;
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
-}
+/* ============================================/* ============================================
 
-.inline-photo-left {
-  float: left;
-  margin-right: 1.5rem;
-}
 
-.inline-photo-right {
-  float: right;
-  margin-left: 1.5rem;
-}
-
-.clear-photos {
-  clear: both;
-}
-
-@media (max-width: 600px) {
-  .inline-photo-left,
-  .inline-photo-right {
-    float: none;
-    width: 100%;
-    margin: 1.75rem 0 0.5rem;
-  }
-}
 .unesco-tracker {
   max-width: var(--wide-width);
   margin: 0 auto;
