@@ -810,3 +810,18 @@ img { max-width: 100%; display: block; }
 @media (max-width: 600px) {
   .photo-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* Triple photo row */
+.inline-photo-triple {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin: 1.75rem 0;
+}
+
+.inline-photo-triple img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 4px;
+}
