@@ -792,3 +792,21 @@ img { max-width: 100%; display: block; }
   padding-top: 0.6rem;
   border-top: 1px solid rgba(245, 242, 236, 0.25);
 }
+/* Photo grid */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin: 1.75rem 0;
+}
+
+.photo-grid img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+  .photo-grid { grid-template-columns: repeat(2, 1fr); }
+}
